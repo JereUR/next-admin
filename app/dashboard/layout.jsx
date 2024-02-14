@@ -3,11 +3,11 @@ import SideBar from '../ui/dashboard/sidebar/SideBar'
 
 const Layout = ({ children }) => {
   return (
-    <div>
-      <div>
+    <div className="flex">
+      <div className="w-1/5 bg-gray-800 p-5">
         <SideBar />
       </div>
-      <div>
+      <div className="w-4/5 p-5">
         <NavBar />
         {children}
       </div>
