@@ -12,12 +12,12 @@ const NavBar = () => {
   const pathname = usePathname()
 
   return (
-    <div className="flex items-center justify-between p-5 rounded-xl bg-gray-800">
+    <div className="flex items-center justify-between p-5 rounded-lg bg-gray-800">
       <div className="text-gray-300 font-bold capitalize">
         {pathname.split('/').pop()}
       </div>
       <div className="flex items-center gap-5">
-        <div className="flex items-center gap-2 bg-gray-700 p-2 rounded-xl">
+        <div className="flex items-center gap-2 bg-gray-700 p-2 rounded-lg">
           <MdSearch />
           <input
             className="bg-transparent border-none text-white"
