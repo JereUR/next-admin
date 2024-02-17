@@ -32,3 +32,26 @@ a {
 .chart-container {
   height: 450px;
 }
+
+.form-product input,
+.form-product textarea,
+.form-product select {
+  padding: 20px;
+  background-color: var(--bg);
+  color: var(--text);
+  border-radius: 5px;
+  margin-bottom: 30px;
+  border: 2px solid #2e374a;
+  font-size: 14px;
+}
+
+.form-product input,
+.form-product select {
+  width: 45%;
+}
+
+.form-product input:focus,
+.form-product select:focus,
+.form-product textarea:focus {
+  outline: none;
+}
