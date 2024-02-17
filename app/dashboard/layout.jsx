@@ -1,3 +1,4 @@
+import Footer from '../ui/dashboard/footer/Footer'
 import NavBar from '../ui/dashboard/navbar/NavBar'
 import SideBar from '../ui/dashboard/sidebar/SideBar'
 
@@ -10,6 +11,7 @@ const Layout = ({ children }) => {
       <div className="w-4/5 p-5">
         <NavBar />
         {children}
+        <Footer />
       </div>
     </div>
   )
