@@ -55,3 +55,24 @@ a {
 .form-product textarea:focus {
   outline: none;
 }
+
+.user-form input,
+.user-form textarea,
+.user-form select {
+  padding: 20px;
+  border: 2px solid #2e374a;
+  border-radius: 5px;
+  background-color: var(--bg);
+  color: var(--text);
+  margin: 10px 0px;
+}
+
+.user-form input:focus,
+.user-form textarea:focus,
+.user-form select:focus {
+  outline: none;
+}
+
+.user-form label {
+  font-size: 14px;
+}
