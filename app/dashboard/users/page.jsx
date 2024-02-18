@@ -77,7 +77,7 @@ const UsersPage = () => {
               <td>{user.status}</td>
               <td>
                 <div className="flex gap-2">
-                  <Link href="/">
+                  <Link href="/dashboard/users/test">
                     <button className="py-1 px-2 rounded-md text-white border-none cursor-pointer bg-teal-700">
                       View
                     </button>
