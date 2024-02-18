@@ -77,7 +77,7 @@ const ProductsPage = () => {
               <td>{product.stock}</td>
               <td>
                 <div className="flex gap-2">
-                  <Link href="/">
+                  <Link href="/dashboard/products/test">
                     <button className="py-1 px-2 rounded-md text-white border-none cursor-pointer bg-teal-700">
                       View
                     </button>
