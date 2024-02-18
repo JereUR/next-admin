@@ -23,7 +23,7 @@ const addProductPage = () => {
           rows="16"
         ></textarea>
         <button
-          className="w-full p-7 bg-teal-600 text-white rounded-sm cursor-pointer"
+          className="w-full p-7 bg-teal-700 text-white rounded-md cursor-pointer"
           type="submit"
         >
           Submit
