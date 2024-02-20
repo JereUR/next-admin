@@ -76,3 +76,21 @@ a {
 .user-form label {
   font-size: 14px;
 }
+
+.form-login {
+  width: 500px;
+  height: 500px;
+}
+
+.form-login input {
+  width: 100%;
+  padding: 30px;
+  border: 2px solid #2e374a;
+  border-radius: 5px;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.form-login input:focus {
+  outline: none;
+}
