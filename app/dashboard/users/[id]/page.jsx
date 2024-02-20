@@ -22,12 +22,12 @@ const SingleUserPage = () => {
           <label>Address</label>
           <textarea name="address" placeholder="New York"></textarea>
           <label>Is Admin?</label>
-          <select name="isAdmin" id="isAdmin">
+          <select name="isAdmin" id="isAdmin" className="cursor-pointer">
             <option value={true}>Yes</option>
             <option value={false}>No</option>
           </select>
           <label>Is Active?</label>
-          <select name="isActive" id="isActive">
+          <select name="isActive" id="isActive" className="cursor-pointer">
             <option value={true}>Yes</option>
             <option value={false}>No</option>
           </select>
