@@ -13,11 +13,6 @@ const SingleUserPage = () => {
         <form action="" className="user-form flex flex-col">
           <label>Name</label>
           <input type="text" name="name" placeholder="Product" />
-          <select name="cat" id="cat">
-            <option value="kitchen">Kitchen</option>
-            <option value="phone">Phone</option>
-            <option value="computer">Computer</option>
-          </select>
           <label>Price</label>
           <input type="text" name="price" placeholder="$400" />
           <label>Stock</label>
@@ -26,6 +21,12 @@ const SingleUserPage = () => {
           <input type="text" name="color" placeholder="Color" />
           <label>Size</label>
           <input type="text" name="size" placeholder="Size" />
+          <label>Category</label>
+          <select name="cat" id="cat" className="cursor-pointer">
+            <option value="kitchen">Kitchen</option>
+            <option value="phone">Phone</option>
+            <option value="computer">Computer</option>
+          </select>
           <label>Description</label>
           <textarea
             className="w-full"
