@@ -3,38 +3,10 @@ import Image from 'next/image'
 
 import Search from '@/app/ui/dashboard/search/Search'
 import Pagination from '@/app/ui/dashboard/pagination/Pagination'
+import { fetchUsers } from '@/app/lib/data'
 
-const users = [
-  {
-    id: 1,
-    name: 'John Doe',
-    img: '/noavatar.png',
-    email: 'john@gmail.com',
-    date: '13.01.2022',
-    role: 'Admin',
-    status: 'Active'
-  },
-  {
-    id: 2,
-    name: 'John Doe',
-    img: '/noavatar.png',
-    email: 'john@gmail.com',
-    date: '13.01.2022',
-    role: 'Admin',
-    status: 'Active'
-  },
-  {
-    id: 3,
-    name: 'John Doe',
-    img: '/noavatar.png',
-    email: 'john@gmail.com',
-    date: '13.01.2022',
-    role: 'Admin',
-    status: 'Active'
-  }
-]
-
-const UsersPage = () => {
+const UsersPage = async () => {
+  const users = await fetchUsers()
   return (
     <div className="bg-gray-800 p-5 rounded-lg mt-5">
       <div className="flex items-center justify-between">
@@ -63,21 +35,21 @@ const UsersPage = () => {
                 <div className="flex items-center gap-2">
                   <Image
                     className="rounded-full object-cover"
-                    src={user.img}
+                    src={user.img || '/noavatar.png'}
                     alt={`User ${user.id} photo`}
                     width={40}
                     height={40}
                   />
-                  {user.name}
+                  {user.username}
                 </div>
               </td>
               <td>{user.email}</td>
-              <td>{user.date}</td>
-              <td>{user.role}</td>
-              <td>{user.status}</td>
+              <td>{user.createdAt?.toString().slice(4, 16)}</td>
+              <td>{user.isAdmin ? 'Admin' : 'Client'}</td>
+              <td>{user.isActtive ? 'Active' : 'Passive'}</td>
               <td>
                 <div className="flex gap-2">
-                  <Link href="/dashboard/users/test">
+                  <Link href={`/dashboard/users/${user.id}`}>
                     <button className="py-1 px-2 rounded-md text-white border-none cursor-pointer bg-teal-700">
                       View
                     </button>
