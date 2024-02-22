@@ -8,7 +8,6 @@ export const connectToDB = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true
     })
-    console.log(connection)
     connection.isConnected = db.connections[0].readyState
   } catch (error) {
     console.log(error)
