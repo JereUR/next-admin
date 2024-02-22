@@ -3,38 +3,12 @@ import Image from 'next/image'
 
 import Search from '@/app/ui/dashboard/search/Search'
 import Pagination from '@/app/ui/dashboard/pagination/Pagination'
+import { fetchProducts } from '@/app/lib/data'
 
-const products = [
-  {
-    id: 1,
-    name: 'Iphone',
-    img: '/noproduct.jpg',
-    description: 'Default description',
-    price: '$150',
-    date: '13.01.2022',
-    stock: '45'
-  },
-  {
-    id: 2,
-    name: 'LG Monitor',
-    img: '/noproduct.jpg',
-    description: 'Default description',
-    price: '$190',
-    date: '13.01.2022',
-    stock: '35'
-  },
-  {
-    id: 3,
-    name: 'CPU Intel',
-    img: '/noproduct.jpg',
-    description: 'Default description',
-    price: '$150',
-    date: '13.01.2022',
-    stock: '41'
-  }
-]
-
-const ProductsPage = () => {
+const ProductsPage = async ({ searchParams }) => {
+  const q = searchParams?.q || ''
+  const page = searchParams?.page || 1
+  const { products, count } = await fetchProducts(q, page)
   return (
     <div className="bg-gray-800 p-5 rounded-lg mt-5">
       <div className="flex items-center justify-between">
@@ -63,21 +37,21 @@ const ProductsPage = () => {
                 <div className="flex items-center gap-2">
                   <Image
                     className="rounded-full object-cover"
-                    src={product.img}
+                    src={product.img || '/noproduct.jpg'}
                     alt={`product ${product.id} photo`}
                     width={40}
                     height={40}
                   />
-                  {product.name}
+                  {product.title}
                 </div>
               </td>
-              <td>{product.description}</td>
+              <td>{product.desc}</td>
               <td>{product.price}</td>
-              <td>{product.date}</td>
+              <td>{product.createdAt.toString()}</td>
               <td>{product.stock}</td>
               <td>
                 <div className="flex gap-2">
-                  <Link href="/dashboard/products/test">
+                  <Link href={`/dashboard/products/${product.id}`}>
                     <button className="py-1 px-2 rounded-md text-white border-none cursor-pointer bg-teal-700">
                       View
                     </button>
@@ -91,7 +65,7 @@ const ProductsPage = () => {
           ))}
         </tbody>
       </table>
-      <Pagination />
+      <Pagination count={count} />
     </div>
   )
 }
