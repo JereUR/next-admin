@@ -5,8 +5,11 @@ import Search from '@/app/ui/dashboard/search/Search'
 import Pagination from '@/app/ui/dashboard/pagination/Pagination'
 import { fetchUsers } from '@/app/lib/data'
 
-const UsersPage = async () => {
-  const users = await fetchUsers()
+const UsersPage = async ({ searchParams }) => {
+  const q = searchParams?.q || ''
+  const page = searchParams?.page || 1
+  const { users, count } = await fetchUsers(q, page)
+
   return (
     <div className="bg-gray-800 p-5 rounded-lg mt-5">
       <div className="flex items-center justify-between">
@@ -63,7 +66,7 @@ const UsersPage = async () => {
           ))}
         </tbody>
       </table>
-      <Pagination />
+      <Pagination count={count} />
     </div>
   )
 }
