@@ -1,9 +1,13 @@
+import { addProduct } from '@/app/lib/actions'
 import React from 'react'
 
 const addProductPage = () => {
   return (
     <div className="bg-gray-800 p-5 rounded-lg mt-5">
-      <form action="" className="form-product flex flex-wrap justify-between">
+      <form
+        action={addProduct}
+        className="form-product flex flex-wrap justify-between"
+      >
         <input type="text" placeholder="Title" name="title" required />
         <select name="cat" id="cat">
           <option value="general">Choose a Category</option>
