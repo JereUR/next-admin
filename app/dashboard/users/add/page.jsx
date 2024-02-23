@@ -1,9 +1,13 @@
+import { addUser } from '@/app/lib/actions'
 import React from 'react'
 
 const addUserPage = () => {
   return (
     <div className="bg-gray-800 p-5 rounded-lg mt-5">
-      <form action="" className="form-product flex flex-wrap justify-between">
+      <form
+        action={addUser}
+        className="form-product flex flex-wrap justify-between"
+      >
         <input type="text" placeholder="Username" name="username" required />
         <input type="email" placeholder="Email" name="email" required />
         <input
@@ -14,14 +18,14 @@ const addUserPage = () => {
         />
         <input type="number" placeholder="Phone" name="phone" />
         <select name="isAdmin" id="isAdmin">
-          <option value={false} selected>
+          <option value={false} defaultValue={false}>
             Is Admin?
           </option>
           <option value={true}>Yes</option>
           <option value={false}>No</option>
         </select>
         <select name="isActive" id="isActive">
-          <option value={true} selected>
+          <option value={true} defaultValue={false}>
             Is Active?
           </option>
           <option value={true}>Yes</option>
