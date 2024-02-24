@@ -9,7 +9,7 @@ const addProductPage = () => {
         className="form-product flex flex-wrap justify-between"
       >
         <input type="text" placeholder="Title" name="title" required />
-        <select name="cat" id="cat">
+        <select name="category" id="cat">
           <option value="general">Choose a Category</option>
           <option value="kitchen">Kitchen</option>
           <option value="phone">Phone</option>
