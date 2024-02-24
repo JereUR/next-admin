@@ -1,28 +1,42 @@
+import { updateProduct } from '@/app/lib/actions'
+import { fetchProduct } from '@/app/lib/data'
 import Image from 'next/image'
 
-const SingleUserPage = () => {
+const SingleUserPage = async ({ params }) => {
+  const { id } = params
+  const product = await fetchProduct(id)
   return (
     <div className="flex gap-12 mt-5">
       <div className="w-1/4 bg-gray-800 p-5 rounded-lg font-bold text-gray-300 h-max">
         <div className="w-full h-80 relative rounded-lg overflow-hidden mb-5">
-          <Image src="/noproduct.jpg" alt="" fill />
+          <Image
+            src={product.img ? product.img : '/noproduct.jpg'}
+            alt={`${product.title} image`}
+            fill
+          />
         </div>
-        Product
+        {product.title}
       </div>
       <div className="w-3/4 bg-gray-800 p-5 rounded-lg">
-        <form action="" className="user-form flex flex-col">
+        <form action={updateProduct} className="user-form flex flex-col">
+          <input type="hidden" name="id" value={product.id} />
           <label>Name</label>
-          <input type="text" name="name" placeholder="Product" />
+          <input type="text" name="name" placeholder={product.title} />
           <label>Price</label>
-          <input type="text" name="price" placeholder="$400" />
+          <input type="text" name="price" placeholder={product.price} />
           <label>Stock</label>
-          <input type="text" name="stock" placeholder="51" />
+          <input type="text" name="stock" placeholder={product.stock} />
           <label>Color</label>
-          <input type="text" name="color" placeholder="Color" />
+          <input type="text" name="color" placeholder={product.color} />
           <label>Size</label>
-          <input type="text" name="size" placeholder="Size" />
+          <input type="text" name="size" placeholder={product.size} />
           <label>Category</label>
-          <select name="cat" id="cat" className="cursor-pointer">
+          <select
+            name="category"
+            id="cat"
+            className="cursor-pointer"
+            defaulValue={product.category}
+          >
             <option value="kitchen">Kitchen</option>
             <option value="phone">Phone</option>
             <option value="computer">Computer</option>
@@ -31,7 +45,7 @@ const SingleUserPage = () => {
           <textarea
             className="w-full"
             name="description"
-            placeholder="Description"
+            placeholder={product.description}
             id="desc"
             rows="4"
           ></textarea>
