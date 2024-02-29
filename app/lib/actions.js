@@ -6,6 +6,7 @@ import bcrypt from 'bcrypt'
 
 import { Product, User } from './models'
 import { connectToDB } from './utils'
+import { signIn } from '../auth'
 
 export const addUser = async (formData) => {
   const { username, email, password, phone, address, isAdmin, isActive } =
@@ -153,4 +154,14 @@ export const deleteUser = async (formData) => {
   }
 
   revalidatePath('/dashboard/users')
+}
+
+export const authenticate = async (prevState, formData) => {
+  const { username, password } = Object.fromEntries(formData)
+
+  try {
+    await signIn('credentials', { username, password })
+  } catch (error) {
+    return 'Wrong Credentials!'
+  }
 }
