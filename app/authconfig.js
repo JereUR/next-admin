@@ -1,12 +1,13 @@
 export const authConfig = {
+  providers: [],
   pages: {
-    sigIn: '/login'
+    signIn: '/login'
   },
   callbacks: {
     authorized({ auth, request }) {
       const isLoggedIn = auth?.user
-      const isOnDashborad = request.nextUrl.pathname.starsWith('/dashboard')
-      if (isOnDashborad) {
+      const isOnDashboard = request.nextUrl.pathname.startsWith('/dashboard')
+      if (isOnDashboard) {
         if (isLoggedIn) return true
         return false
       } else if (isLoggedIn) {
