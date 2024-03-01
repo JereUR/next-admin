@@ -8,7 +8,7 @@ const MenuLink = ({ item }) => {
 
   return (
     <Link
-      className={`p-5 flex items-center gap-2 my-1 mx-0 rounded-lg hover:bg-gray-700 ${
+      className={`p-4 flex items-center gap-2 my-1 mx-0 rounded-lg hover:bg-gray-700 ${
         pathname === item.path && 'bg-gray-700'
       }`}
       href={item.path}

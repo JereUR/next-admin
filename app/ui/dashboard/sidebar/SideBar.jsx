@@ -12,6 +12,7 @@ import {
   MdHelpCenter,
   MdLogout
 } from 'react-icons/md'
+import { GiAbdominalArmor, GiMeal } from 'react-icons/gi'
 import { auth, signOut } from '@/app/auth'
 
 const menuItems = [
@@ -27,6 +28,16 @@ const menuItems = [
         title: 'Users',
         path: '/dashboard/users',
         icon: <MdSupervisedUserCircle />
+      },
+      {
+        title: 'Routines',
+        path: '/dashboard/routines',
+        icon: <GiAbdominalArmor />
+      },
+      {
+        title: 'Nutritional Planning',
+        path: '/dashboard/nutricional-planning',
+        icon: <GiMeal />
       },
       {
         title: 'Products',
