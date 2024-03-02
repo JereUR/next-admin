@@ -1,6 +1,8 @@
 import mongoose from 'mongoose'
 
-const userSchema = new mongoose.Schema(
+const Schema = mongoose.Schema
+
+const userSchema = new Schema(
   {
     username: {
       type: String,
@@ -34,12 +36,18 @@ const userSchema = new mongoose.Schema(
     },
     address: {
       type: String
-    }
+    },
+    routines: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Routine'
+      }
+    ]
   },
   { timestamps: true }
 )
 
-const productSchema = new mongoose.Schema(
+const productSchema = new Schema(
   {
     title: {
       type: String,
@@ -76,6 +84,77 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-export const User = mongoose.models.User || mongoose.model('User', userSchema)
-export const Product =
+const exerciseSchema = new Schema({
+  series: {
+    type: Number,
+    required: true
+  },
+  count: {
+    type: Number,
+    required: true
+  },
+  measure: {
+    type: String,
+    required: true
+  },
+  zone: {
+    type: String,
+    required: true
+  },
+  name: {
+    type: String,
+    required: true
+  },
+  img: {
+    type: String
+  },
+  rest: {
+    type: String
+  },
+  description: {
+    type: String
+  }
+})
+
+const customRoutineSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true
+    },
+    exercises: {
+      type: [exerciseSchema]
+    },
+    description: {
+      type: String
+    }
+  },
+  { timestamps: true }
+)
+
+const routineSchema = new Schema({
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  day: {
+    type: String,
+    required: true
+  },
+  exercises: {
+    type: [exerciseSchema]
+  }
+})
+
+const Product =
   mongoose.models.Product || mongoose.model('Product', productSchema)
+const Exercise =
+  mongoose.models.Exercise || mongoose.model('Exercise', exerciseSchema)
+const CustomRoutine =
+  mongoose.models.CustomRoutine ||
+  mongoose.model('CustomRoutine', customRoutineSchema)
+const Routine =
+  mongoose.models.Routine || mongoose.model('Routine', routineSchema)
+const User = mongoose.models.User || mongoose.model('User', userSchema)
+
+module.exports = { Exercise, Routine, User, Product, CustomRoutine }
