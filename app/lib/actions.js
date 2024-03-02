@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import bcrypt from 'bcrypt'
 
-import { Product, User } from './models'
+import { Product, User, CustomRoutine } from './models'
 import { connectToDB } from './utils'
 import { signIn } from '../auth'
 
@@ -164,4 +164,19 @@ export const authenticate = async (prevState, formData) => {
   } catch (error) {
     return 'Wrong Credentials!'
   }
+}
+
+export const deleteCustomRoutine = async (formData) => {
+  const { id } = Object.fromEntries(formData)
+
+  try {
+    connectToDB()
+
+    await CustomRoutine.findByIdAndDelete(id)
+  } catch (error) {
+    console.log(error)
+    throw new Error('Failed to delete routine!')
+  }
+
+  revalidatePath('/dashboard/routines')
 }
