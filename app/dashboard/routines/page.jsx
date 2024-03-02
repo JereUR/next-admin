@@ -1,17 +1,72 @@
-import Image from 'next/image'
+import Link from 'next/link'
 
-import localDB from '../../localdb/db_local.json'
+import Search from '@/app/ui/dashboard/search/Search'
+import Pagination from '@/app/ui/dashboard/pagination/Pagination'
+import { fetchCustomRoutines } from '@/app/lib/data'
+import { deleteCustomRoutine } from '@/app/lib/actions'
 
-const RoutinesPage = () => {
-  console.log(localDB.exercises['Abdominales y lumbares'][0].photo)
+const RoutinesPage = async ({ searchParams }) => {
+  const q = searchParams?.q || ''
+  const page = searchParams?.page || 1
+  const { routines, count } = await fetchCustomRoutines(q, page)
+
   return (
-    <div>
-      <Image
-        src={localDB.exercises['Abdominales y lumbares'][0].photo}
-        width={40}
-        height={40}
-        alt={localDB.exercises['Abdominales y lumbares'][0].exercise}
-      />
+    <div className="bg-gray-800 p-5 rounded-lg mt-5">
+      <div className="flex items-center justify-between">
+        <Search placeholder="Search for a routine..." />
+        <Link href="/dashboard/Routines/add">
+          <button className="p-2 bg-purple-800 text-white border-none rounded-md cursor-pointer">
+            Add New
+          </button>
+        </Link>
+      </div>
+      <table className="transactions-table w-full">
+        <thead>
+          <tr>
+            <td>Name</td>
+            <td>Description</td>
+            <td>Created At</td>
+            <td>Action</td>
+          </tr>
+        </thead>
+        {routines.length > 0 ? (
+          <tbody>
+            {routines.map((routine) => (
+              <tr className="my-4" key={routine.id}>
+                <td>
+                  <div className="flex items-center gap-2">{routine.name}</div>
+                </td>
+                <td>{routine.description}</td>
+                <td>{routine.createdAt?.toString().slice(4, 16)}</td>
+                <td>
+                  <div className="flex gap-2">
+                    <Link href={`/dashboard/routines/${routine.id}`}>
+                      <button className="py-1 px-2 rounded-md text-white border-none cursor-pointer bg-teal-700">
+                        View
+                      </button>
+                    </Link>
+                    <form action={deleteCustomRoutine}>
+                      <input type="hidden" value={routine.id} name="id" />
+                      <button className="py-1 px-2 rounded-md text-white border-none cursor-pointer bg-red-600">
+                        Delete
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        ) : (
+          <tbody>
+            <tr>
+              <td colSpan="4" className="text-center italic text-2xl">
+                Sin Rutinas
+              </td>
+            </tr>
+          </tbody>
+        )}
+      </table>
+      <Pagination count={count} />
     </div>
   )
 }
