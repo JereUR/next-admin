@@ -122,9 +122,15 @@ const customRoutineSchema = new Schema(
       type: String,
       required: true
     },
-    exercises: {
-      type: [exerciseSchema]
-    },
+    days: [
+      {
+        day: {
+          type: String,
+          required: true
+        },
+        exercises: [exerciseSchema]
+      }
+    ],
     description: {
       type: String
     }
