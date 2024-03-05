@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 
-const CreateRoutineForm = ({ days, exercises, createRoutine }) => {
+const CreateRoutineForm = ({ exercises, createRoutine }) => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
 
