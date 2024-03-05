@@ -14,7 +14,7 @@ const RoutinesPage = async ({ searchParams }) => {
     <div className="bg-gray-800 p-5 rounded-lg mt-5">
       <div className="flex items-center justify-between">
         <Search placeholder="Search for a routine..." />
-        <Link href="/dashboard/Routines/add">
+        <Link href="/dashboard/routines/add">
           <button className="p-2 bg-purple-800 text-white border-none rounded-md cursor-pointer">
             Add New
           </button>
