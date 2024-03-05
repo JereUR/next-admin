@@ -166,6 +166,28 @@ export const authenticate = async (prevState, formData) => {
   }
 }
 
+export const addCustomRoutine = async (formData) => {
+  const { name, exercises, description } = Object.fromEntries(formData)
+
+  try {
+    connectToDB()
+
+    const newCustomRoutine = new CustomRoutine({
+      name,
+      exercises,
+      description
+    })
+
+    await newCustomRoutine.save()
+  } catch (error) {
+    console.log(error)
+    throw new Error('Failed to create routine!')
+  }
+
+  revalidatePath('/dashboard/routines')
+  redirect('/dashboard/routines')
+}
+
 export const deleteCustomRoutine = async (formData) => {
   const { id } = Object.fromEntries(formData)
 
