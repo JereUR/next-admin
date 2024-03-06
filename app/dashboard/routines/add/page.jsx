@@ -1,8 +1,9 @@
 'use client'
 import { useState } from 'react'
 
-import DayContainer from './DayContainer'
-import CreateRoutineForm from './CreateRoutineForm'
+import DayContainer from '../../../ui/dashboard/routines/DayContainer'
+import CreateRoutineForm from '../../../ui/dashboard/routines/CreateRoutineForm'
+import { addCustomRoutine } from '@/app/lib/actions'
 
 const AddCustomRoutinePage = () => {
   const [days, setDays] = useState([
@@ -14,25 +15,47 @@ const AddCustomRoutinePage = () => {
     { day: 'Sábado', exercises: [] },
     { day: 'Domingo', exercises: [] }
   ])
+  const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
 
   const addExercise = (dayIndex, newExercise) => {
-    console.log(dayIndex)
-    console.log(newExercise)
     const newDays = [...days]
     const dayExercises = newDays[dayIndex].exercises
     newDays[dayIndex].exercises = [...dayExercises, newExercise]
     setDays(newDays)
   }
 
-  const createRoutine = (routineData) => {
-    // Implementar la lógica para enviar la información de la rutina al servidor
-    console.log('Enviando rutina:', routineData)
+  const createRoutine = (event) => {
+    event.preventDefault()
+    const routineData = {
+      name,
+      days,
+      description
+    }
+    addCustomRoutine(routineData)
   }
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto ">
       <h1>Crear rutina</h1>
-      <div className="flex flex-wrap">
+      <form onSubmit={createRoutine}>
+        <input
+          type="text"
+          placeholder="Nombre de la rutina"
+          name="name"
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Descripción (opcional)"
+          name="description"
+          value={description}
+          onChange={(event) => setDescription(event.target.value)}
+        />
+        <button>Crear rutina</button>
+      </form>
+      <div className=" flex flex-col">
         {days.map((day, dayIndex) => (
           <DayContainer
             key={day.day}
@@ -43,7 +66,6 @@ const AddCustomRoutinePage = () => {
           />
         ))}
       </div>
-      <CreateRoutineForm exercises={days} createRoutine={createRoutine} />
     </div>
   )
 }
