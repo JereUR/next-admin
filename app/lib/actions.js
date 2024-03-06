@@ -166,8 +166,8 @@ export const authenticate = async (prevState, formData) => {
   }
 }
 
-export const addCustomRoutine = async (formData) => {
-  const { name, exercises, description } = Object.fromEntries(formData)
+export const addCustomRoutine = async (routineData) => {
+  const { name, exercises, description } = routineData
 
   try {
     connectToDB()
