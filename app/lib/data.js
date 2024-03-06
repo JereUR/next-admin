@@ -1,4 +1,4 @@
-import { Product, User, Routine } from './models'
+import { Product, User, CustomRoutine } from './models'
 import { connectToDB } from './utils'
 
 export const fetchUsers = async (q, page) => {
@@ -56,11 +56,11 @@ export const fetchCustomRoutines = async (q, page) => {
   const ITEM_PER_PAGE = 4
   try {
     connectToDB()
-    const count = await Routine.find({ name: { $regex: regex } }).count()
-    const routines = await Routine.find({ name: { $regex: regex } })
+    const count = await CustomRoutine.find({ name: { $regex: regex } }).count()
+    const customRoutines = await CustomRoutine.find({ name: { $regex: regex } })
       .limit(ITEM_PER_PAGE)
       .skip(ITEM_PER_PAGE * (page - 1))
-    return { routines, count }
+    return { customRoutines, count }
   } catch (error) {
     throw new Error('Failed to fecth users!')
   }
