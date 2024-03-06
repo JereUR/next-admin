@@ -40,13 +40,13 @@ input {
 .form-product input,
 .form-product textarea,
 .form-product select {
-  padding: 20px;
   background-color: var(--bg);
-  color: var(--text);
   border-radius: 5px;
-  margin-bottom: 30px;
   border: 2px solid #2e374a;
+  color: var(--text);
   font-size: 14px;
+  margin-bottom: 30px;
+  padding: 20px;
 }
 
 .form-product input,
@@ -54,27 +54,21 @@ input {
   width: 45%;
 }
 
-.form-product input:focus,
-.form-product select:focus,
-.form-product textarea:focus {
+input:focus,
+select:focus,
+textarea:focus {
   outline: none;
 }
 
 .user-form input,
 .user-form textarea,
 .user-form select {
-  padding: 20px;
-  border: 2px solid #2e374a;
-  border-radius: 5px;
   background-color: var(--bg);
+  border-radius: 5px;
+  border: 2px solid #2e374a;
   color: var(--text);
   margin: 10px 0px;
-}
-
-.user-form input:focus,
-.user-form textarea:focus,
-.user-form select:focus {
-  outline: none;
+  padding: 20px;
 }
 
 .user-form label {
@@ -97,4 +91,21 @@ input {
 
 .form-login input:focus {
   outline: none;
+}
+
+.form-routine input,
+.form-routine textarea,
+.form-routine select {
+  background-color: var(--bg);
+  border-radius: 5px;
+  border: 2px solid #2e374a;
+  color: var(--text);
+  font-size: 14px;
+  margin-bottom: 30px;
+  padding: 20px;
+}
+
+.form-routine input,
+.form-routine select {
+  width: 45%;
 }
