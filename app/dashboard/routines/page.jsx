@@ -8,7 +8,7 @@ import { deleteCustomRoutine } from '@/app/lib/actions'
 const RoutinesPage = async ({ searchParams }) => {
   const q = searchParams?.q || ''
   const page = searchParams?.page || 1
-  const { routines, count } = await fetchCustomRoutines(q, page)
+  const { customRoutines, count } = await fetchCustomRoutines(q, page)
 
   return (
     <div className="bg-gray-800 p-5 rounded-lg mt-5">
@@ -29,9 +29,9 @@ const RoutinesPage = async ({ searchParams }) => {
             <td>Action</td>
           </tr>
         </thead>
-        {routines.length > 0 ? (
+        {customRoutines.length > 0 ? (
           <tbody>
-            {routines.map((routine) => (
+            {customRoutines.map((routine) => (
               <tr className="my-4" key={routine.id}>
                 <td>
                   <div className="flex items-center gap-2">{routine.name}</div>
