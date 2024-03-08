@@ -1,22 +1,49 @@
 import { useState } from 'react'
+import Image from 'next/image'
 
-const ExerciseForm = ({ dayIndex, handleSubmit, setShowExerciseForm }) => {
-  const [name, setName] = useState('')
-  const [series, setSeries] = useState(0)
-  const [count, setCount] = useState(0)
-  const [measure, setMeasure] = useState('')
-  const [zone, setZone] = useState('')
+import dbLocal from '../../../localdb/db_local.json'
 
-  const handleSubmitExercise = (event) => {
-    event.preventDefault()
+const ExerciseForm = ({
+  dayIndex,
+  handleSubmit,
+  setShowExerciseForm,
+  exerciseToEdit = null
+}) => {
+  const [formData, setFormData] = useState({
+    zone: exerciseToEdit?.zone || '',
+    name: exerciseToEdit?.name || '',
+    series: exerciseToEdit?.series || '',
+    count: exerciseToEdit?.count || '',
+    measure: exerciseToEdit?.measure || '',
+    photo: exerciseToEdit?.photo || '',
+    rest: exerciseToEdit?.rest || '',
+    description: exerciseToEdit?.description || ''
+  })
+
+  const handleName = (e) => {
+    const p = dbLocal.exercises[formData.zone].find(
+      (ex) => ex.exercise === e.target.value
+    ).photo
+
+    setFormData({ ...formData, name: e.target.value, photo: p })
+  }
+
+  const handleSubmitExercise = (e) => {
+    e.preventDefault()
+    const { name, zone, series, count, measure, photo, rest, description } =
+      formData
+
     const id = Math.random().toString(36).substring(2, 15)
     const newExercise = {
       id,
       name,
-      series,
-      count,
+      zone,
+      series: parseInt(series),
+      count: parseInt(count),
       measure,
-      zone
+      photo,
+      rest,
+      description
     }
     handleSubmit(dayIndex, newExercise)
   }
@@ -30,41 +57,89 @@ const ExerciseForm = ({ dayIndex, handleSubmit, setShowExerciseForm }) => {
         <button type="button" onClick={() => setShowExerciseForm(false)}>
           X
         </button>
-        <input
-          type="text"
+        <select
+          id="zone"
+          name="zone"
+          value={formData.zone}
+          onChange={(e) => setFormData({ ...formData, zone: e.target.value })}
+        >
+          <option value={null}>Seleccione una zona</option>
+          {dbLocal.exercises.Zonas.map((el, index) => (
+            <option value={el} key={index}>
+              {el}
+            </option>
+          ))}
+        </select>
+        <select
+          onChange={handleName}
+          id="name"
+          value={formData.name}
           name="name"
-          placeholder="Nombre del ejercicio"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-        />
+        >
+          <option value={null}>Seleccione un ejercicio</option>
+          {formData.zone &&
+            dbLocal.exercises[formData.zone].map((el, index) => (
+              <option value={el.exercise} key={index}>
+                {el.exercise}
+              </option>
+            ))}
+        </select>
+        {formData.photo && (
+          <div>
+            <p>Foto ejercicio {formData.name}:</p>
+            <Image
+              width={100}
+              height={80}
+              src={formData.photo}
+              alt={`Image for ${formData.name} exercise`}
+            />
+          </div>
+        )}
         <input
           type="number"
+          id="series"
+          value={formData.series}
           name="series"
           placeholder="Series"
-          value={series}
-          onChange={(event) => setSeries(event.target.value)}
+          onChange={(e) => setFormData({ ...formData, series: e.target.value })}
         />
         <input
           type="number"
+          id="count"
+          value={formData.count}
           name="count"
           placeholder="Repeticiones/Segundos"
-          value={count}
-          onChange={(event) => setCount(event.target.value)}
-        />
-        <input
-          type="measure"
-          name="measure"
-          placeholder="Medida"
-          value={measure}
-          onChange={(event) => setMeasure(event.target.value)}
+          onChange={(e) => setFormData({ ...formData, count: e.target.value })}
         />
         <input
           type="text"
-          name="zone"
-          placeholder="Zona"
-          value={zone}
-          onChange={(event) => setZone(event.target.value)}
+          id="measure"
+          name="measure"
+          value={formData.measure}
+          placeholder="Medida"
+          onChange={(e) =>
+            setFormData({ ...formData, measure: e.target.value })
+          }
         />
+        <input
+          type="text"
+          id="rest"
+          name="rest"
+          value={formData.rest}
+          placeholder="Descanso"
+          onChange={(e) => setFormData({ ...formData, rest: e.target.value })}
+        />
+        <input
+          type="text"
+          id="description"
+          name="description"
+          value={formData.description}
+          placeholder="Descripcion"
+          onChange={(e) =>
+            setFormData({ ...formData, description: e.target.value })
+          }
+        />
+
         <button type="submit">Agregar</button>
       </form>
     </div>

@@ -2,7 +2,6 @@
 import { useState } from 'react'
 
 import DayContainer from '../../../ui/dashboard/routines/DayContainer'
-import CreateRoutineForm from '../../../ui/dashboard/routines/CreateRoutineForm'
 import { addCustomRoutine } from '@/app/lib/actions'
 
 const AddCustomRoutinePage = () => {
@@ -15,13 +14,30 @@ const AddCustomRoutinePage = () => {
     { day: 'Sábado', exercises: [] },
     { day: 'Domingo', exercises: [] }
   ])
+  const [showExerciseForm, setShowExerciseForm] = useState(false)
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
+  const [exerciseToEdit, setExerciseToEdit] = useState(null)
 
   const addExercise = (dayIndex, newExercise) => {
     const newDays = [...days]
     const dayExercises = newDays[dayIndex].exercises
     newDays[dayIndex].exercises = [...dayExercises, newExercise]
+    setDays(newDays)
+  }
+
+  const editExercise = (dayIndex, exercise) => {
+    removeExercise(dayIndex, exercise.id)
+    setExerciseToEdit(exercise)
+    setShowExerciseForm(true)
+  }
+
+  const removeExercise = (dayIndex, id) => {
+    const newDays = [...days]
+    const newDayExercises = days[dayIndex].exercises.filter(
+      (ex) => ex.id !== id
+    )
+    newDays[dayIndex].exercises = newDayExercises
     setDays(newDays)
   }
 
@@ -63,6 +79,11 @@ const AddCustomRoutinePage = () => {
             dayIndex={dayIndex}
             exercises={day.exercises}
             addExercise={addExercise}
+            editExercise={editExercise}
+            removeExercise={removeExercise}
+            showExerciseForm={showExerciseForm}
+            setShowExerciseForm={setShowExerciseForm}
+            exerciseToEdit={exerciseToEdit}
           />
         ))}
       </div>
