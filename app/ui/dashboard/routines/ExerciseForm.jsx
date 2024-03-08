@@ -7,6 +7,7 @@ const ExerciseForm = ({
   dayIndex,
   handleSubmit,
   setShowExerciseForm,
+  showExerciseForm,
   exerciseToEdit = null
 }) => {
   const [formData, setFormData] = useState({
@@ -19,6 +20,12 @@ const ExerciseForm = ({
     rest: exerciseToEdit?.rest || '',
     description: exerciseToEdit?.description || ''
   })
+
+  const handleCloseForm = () => {
+    const newShow = [...showExerciseForm]
+    newShow[dayIndex] = false
+    setShowExerciseForm(newShow)
+  }
 
   const handleName = (e) => {
     const p = dbLocal.exercises[formData.zone].find(
@@ -54,7 +61,7 @@ const ExerciseForm = ({
         onSubmit={handleSubmitExercise}
         className="form-routine flex flex-wrap justify-between"
       >
-        <button type="button" onClick={() => setShowExerciseForm(false)}>
+        <button type="button" onClick={handleCloseForm}>
           X
         </button>
         <select

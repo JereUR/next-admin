@@ -15,7 +15,9 @@ const DayContainer = ({
   setShowExerciseForm
 }) => {
   const handleAddExercise = () => {
-    setShowExerciseForm(true)
+    const newShow = [...showExerciseForm]
+    newShow[dayIndex] = true
+    setShowExerciseForm(newShow)
   }
 
   const handleSubmit = (dayIndex, newExercise) => {
@@ -26,7 +28,7 @@ const DayContainer = ({
   return (
     <div className="border rounded p-4 mb-4 ">
       <h3>{day}</h3>
-      {!showExerciseForm && (
+      {!showExerciseForm[dayIndex] && (
         <button
           className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-700"
           onClick={handleAddExercise}
@@ -34,12 +36,13 @@ const DayContainer = ({
           Agregar ejercicio
         </button>
       )}
-      {showExerciseForm && (
+      {showExerciseForm[dayIndex] && (
         <ExerciseForm
           dayIndex={dayIndex}
           handleSubmit={handleSubmit}
           setShowExerciseForm={setShowExerciseForm}
           exerciseToEdit={exerciseToEdit}
+          showExerciseForm={showExerciseForm}
         />
       )}
       <ul>

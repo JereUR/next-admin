@@ -14,7 +14,15 @@ const AddCustomRoutinePage = () => {
     { day: 'Sábado', exercises: [] },
     { day: 'Domingo', exercises: [] }
   ])
-  const [showExerciseForm, setShowExerciseForm] = useState(false)
+  const [showExerciseForm, setShowExerciseForm] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ])
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [exerciseToEdit, setExerciseToEdit] = useState(null)
@@ -29,7 +37,9 @@ const AddCustomRoutinePage = () => {
   const editExercise = (dayIndex, exercise) => {
     removeExercise(dayIndex, exercise.id)
     setExerciseToEdit(exercise)
-    setShowExerciseForm(true)
+    const newShow = [...showExerciseForm]
+    newShow[dayIndex] = true
+    setShowExerciseForm(newShow)
   }
 
   const removeExercise = (dayIndex, id) => {
