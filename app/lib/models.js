@@ -105,7 +105,7 @@ const exerciseSchema = new Schema({
     type: String,
     required: true
   },
-  img: {
+  photo: {
     type: String
   },
   rest: {
