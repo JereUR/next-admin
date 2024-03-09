@@ -2,6 +2,7 @@
 import { useState } from 'react'
 
 import ExerciseForm from './ExerciseForm'
+import ExerciseList from './ExerciseList'
 
 const DayContainer = ({
   day,
@@ -15,14 +16,20 @@ const DayContainer = ({
   setShowExerciseForm
 }) => {
   const handleAddExercise = () => {
-    const newShow = [...showExerciseForm]
-    newShow[dayIndex] = true
-    setShowExerciseForm(newShow)
+    setShowExerciseForm((prevShow) => {
+      const newShow = [...prevShow]
+      newShow[dayIndex] = true
+      return newShow
+    })
   }
 
   const handleSubmit = (dayIndex, newExercise) => {
     addExercise(dayIndex, newExercise)
-    setShowExerciseForm(false)
+    setShowExerciseForm((prevShow) => {
+    const newShow = [...prevShow];
+    newShow[dayIndex] = false;
+    return newShow;
+  });
   }
 
   return (
@@ -45,26 +52,12 @@ const DayContainer = ({
           showExerciseForm={showExerciseForm}
         />
       )}
-      <ul>
-        {exercises.map((exercise) => (
-          <li key={exercise.id}>
-            {exercise.name}
-            <button
-              className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-700 ml-2"
-              onClick={() => editExercise(dayIndex, exercise)}
-            >
-              Editar
-            </button>
-            {/* Delete button */}
-            <button
-              className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700 ml-2"
-              onClick={() => removeExercise(dayIndex, exercise.id)}
-            >
-              Borrar
-            </button>
-          </li>
-        ))}
-      </ul>
+      <ExerciseList
+        exercises={exercises}
+        editExercise={editExercise}
+        removeExercise={removeExercise}
+        dayIndex={dayIndex}
+      />
     </div>
   )
 }
