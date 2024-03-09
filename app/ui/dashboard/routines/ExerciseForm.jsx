@@ -22,9 +22,11 @@ const ExerciseForm = ({
   })
 
   const handleCloseForm = () => {
-    const newShow = [...showExerciseForm]
-    newShow[dayIndex] = false
-    setShowExerciseForm(newShow)
+    setShowExerciseForm((prevShow) => {
+      const newShow = [...prevShow]
+      newShow[dayIndex] = false
+      return newShow
+    })
   }
 
   const handleName = (e) => {
