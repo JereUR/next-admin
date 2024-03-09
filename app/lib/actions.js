@@ -141,8 +141,18 @@ export const deleteProduct = async (formData) => {
   revalidatePath('/dashboard/products')
 }
 
-export const deleteUser = async (formData) => {
-  const { id } = Object.fromEntries(formData)
+export const deleteUser = async (email) => {
+  let id = null
+  let user = null
+  try {
+    user = await User.find({ email: email })
+    console.log({ user })
+  } catch (error) {
+    console.log(error)
+  }
+
+  id = user[0]._id
+  console.log(id)
 
   try {
     connectToDB()
