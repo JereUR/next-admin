@@ -15,8 +15,6 @@ const ExerciseList = ({
   return (
     <ul className="">
       {exercises.map((exercise) => {
-        const [expanded, setExpanded] = useState(false)
-
         return (
           <li
             key={exercise.id}
@@ -37,17 +35,7 @@ const ExerciseList = ({
               <p>{exercise.rest}</p>
             </div>
             <div className="text-center p-2">
-              <button
-                className={`text-left p-2 rounded hover:bg-gray-200 ${
-                  expanded ? 'bg-gray-100' : ''
-                }`}
-                onClick={() => setExpanded(!expanded)}
-              >
-                {expanded ? 'Ocultar descripción' : 'Ver descripción'}
-              </button>
-              {expanded && (
-                <div className="text-left">{exercise.description}</div>
-              )}
+              <p>{exercise.description}</p>
             </div>
             <div className="text-center p-2">
               <Image
