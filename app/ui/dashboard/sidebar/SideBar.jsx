@@ -101,7 +101,7 @@ const SideBar = async () => {
           height="50"
         />
         <div className="flex flex-col">
-          <span className="font-medium">Jeremías Dominguez Vega</span>
+          <span className="font-medium">Username</span>
           <span className="text-xs text-gray-300">Administrator</span>
         </div>
       </div>
