@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState} from 'react'
 
 import DayContainer from '../../../ui/dashboard/routines/DayContainer'
 import { addCustomRoutine } from '@/app/lib/actions'
@@ -37,9 +37,11 @@ const AddCustomRoutinePage = () => {
   const editExercise = (dayIndex, exercise) => {
     removeExercise(dayIndex, exercise.id)
     setExerciseToEdit(exercise)
-    const newShow = [...showExerciseForm]
-    newShow[dayIndex] = true
-    setShowExerciseForm(newShow)
+    setShowExerciseForm((prevShow) => {
+      const newShow = [...prevShow]
+      newShow[dayIndex] = true
+      return newShow
+    })
   }
 
   const removeExercise = (dayIndex, id) => {
