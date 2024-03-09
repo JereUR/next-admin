@@ -1,10 +1,11 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 import Search from '@/app/ui/dashboard/search/Search'
 import Pagination from '@/app/ui/dashboard/pagination/Pagination'
 import { fetchUsers } from '@/app/lib/data'
 import { deleteUser } from '@/app/lib/actions'
-import UserRow from '@/app/ui/dashboard/users/UserRow'
+import DeleteForm from '@/app/ui/dashboard/users/DeleteForm'
 
 const UsersPage = async ({ searchParams }) => {
   const q = searchParams?.q || ''
@@ -34,7 +35,36 @@ const UsersPage = async ({ searchParams }) => {
         </thead>
         <tbody>
           {users.map((user) => (
-            <UserRow key={user.id} user={user} onDelete={deleteUser} />
+            <tr className="my-4" key={user.id}>
+              <td>
+                <div className="flex items-center gap-2">
+                  <Image
+                    className="rounded-full object-cover"
+                    src={user.img || '/noavatar.png'}
+                    alt={`User ${user.id} photo`}
+                    width={40}
+                    height={40}
+                  />
+                  {user.username}
+                </div>
+              </td>
+              <td>{user.email}</td>
+              <td>{user.createdAt?.toString().slice(4, 16)}</td>
+              <td>{user.isAdmin ? 'Admin' : 'Client'}</td>
+              <td>{user.isActive ? 'Active' : 'Passive'}</td>
+              <td>
+                <div className="flex gap-2">
+                  <div>
+                    <Link href={`/dashboard/users/${user.id}`}>
+                      <button className="py-1 px-2 rounded-md text-white border-none cursor-pointer bg-teal-700">
+                        View
+                      </button>
+                    </Link>
+                  </div>
+                  <DeleteForm email={user.email} onDelete={deleteUser} />
+                </div>
+              </td>
+            </tr>
           ))}
         </tbody>
       </table>

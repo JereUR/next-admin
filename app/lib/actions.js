@@ -146,13 +146,11 @@ export const deleteUser = async (email) => {
   let user = null
   try {
     user = await User.find({ email: email })
-    console.log({ user })
   } catch (error) {
     console.log(error)
   }
 
   id = user[0]._id
-  console.log(id)
 
   try {
     connectToDB()
