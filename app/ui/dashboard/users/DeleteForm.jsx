@@ -2,11 +2,11 @@
 
 import { useState } from 'react'
 
-const DeleteForm = ({ email, onDelete }) => {
+const DeleteForm = ({ item, onDelete, text }) => {
   const [confirmDelete, setConfirmDelete] = useState(false)
 
   const handleDelete = () => {
-    onDelete(email)
+    onDelete(item)
     setConfirmDelete(false)
   }
 
@@ -20,7 +20,7 @@ const DeleteForm = ({ email, onDelete }) => {
       </button>
       {confirmDelete && (
         <div className="absolute bg-gray-500 border border-gray-800 rounded-md p-4 mt-6 mr-10 gap-2">
-          <p>¿Estás seguro de eliminar este usuario?</p>
+          <p>¿Estás seguro de eliminar {text}?</p>
           <div className="flex justify-between mt-2 gap-4">
             <button
               onClick={handleDelete}
