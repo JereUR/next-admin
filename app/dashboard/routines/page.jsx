@@ -4,6 +4,7 @@ import Search from '@/app/ui/dashboard/search/Search'
 import Pagination from '@/app/ui/dashboard/pagination/Pagination'
 import { fetchCustomRoutines } from '@/app/lib/data'
 import { deleteCustomRoutine } from '@/app/lib/actions'
+import DeleteForm from '@/app/ui/dashboard/users/DeleteForm'
 
 const RoutinesPage = async ({ searchParams }) => {
   const q = searchParams?.q || ''
@@ -40,17 +41,18 @@ const RoutinesPage = async ({ searchParams }) => {
                 <td>{routine.createdAt?.toString().slice(4, 16)}</td>
                 <td>
                   <div className="flex gap-2">
-                    <Link href={`/dashboard/routines/${routine.id}`}>
-                      <button className="py-1 px-2 rounded-md text-white border-none cursor-pointer bg-teal-700">
-                        View
-                      </button>
-                    </Link>
-                    <form action={deleteCustomRoutine}>
-                      <input type="hidden" value={routine.id} name="id" />
-                      <button className="py-1 px-2 rounded-md text-white border-none cursor-pointer bg-red-600">
-                        Delete
-                      </button>
-                    </form>
+                    <div>
+                      <Link href={`/dashboard/routines/${routine.id}`}>
+                        <button className="py-1 px-2 rounded-md text-white border-none cursor-pointer bg-teal-700">
+                          View
+                        </button>
+                      </Link>
+                    </div>
+                    <DeleteForm
+                      item={routine.id}
+                      onDelete={deleteCustomRoutine}
+                      text={`la rutina '${routine.name}'`}
+                    />
                   </div>
                 </td>
               </tr>
