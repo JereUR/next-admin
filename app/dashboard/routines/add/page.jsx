@@ -1,5 +1,5 @@
 'use client'
-import { useState} from 'react'
+import { useState } from 'react'
 
 import DayContainer from '../../../ui/dashboard/routines/DayContainer'
 import { addCustomRoutine } from '@/app/lib/actions'
@@ -55,7 +55,9 @@ const AddCustomRoutinePage = () => {
 
   const createRoutine = (event) => {
     event.preventDefault()
+    const id = Math.random().toString(36).substring(2, 15)
     const routineData = {
+      id,
       name,
       days,
       description
