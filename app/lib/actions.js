@@ -178,12 +178,13 @@ export const authenticate = async (prevState, formData) => {
 }
 
 export const addCustomRoutine = async (routineData) => {
-  const { name, exercises, description } = routineData
+  const { id, name, exercises, description } = routineData
 
   try {
     connectToDB()
 
     const newCustomRoutine = new CustomRoutine({
+      id,
       name,
       exercises,
       description
@@ -199,9 +200,7 @@ export const addCustomRoutine = async (routineData) => {
   redirect('/dashboard/routines')
 }
 
-export const deleteCustomRoutine = async (formData) => {
-  const { id } = Object.fromEntries(formData)
-
+export const deleteCustomRoutine = async (id) => {
   try {
     connectToDB()
 
