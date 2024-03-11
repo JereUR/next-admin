@@ -61,7 +61,11 @@ const UsersPage = async ({ searchParams }) => {
                       </button>
                     </Link>
                   </div>
-                  <DeleteForm email={user.email} onDelete={deleteUser} />
+                  <DeleteForm
+                    email={user.email}
+                    onDelete={deleteUser}
+                    text={`el usuario '${user.username}'`}
+                  />
                 </div>
               </td>
             </tr>
