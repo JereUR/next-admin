@@ -118,6 +118,10 @@ const exerciseSchema = new Schema({
 
 const customRoutineSchema = new Schema(
   {
+    id: {
+      type: String,
+      unique: true
+    },
     name: {
       type: String,
       required: true
