@@ -4,15 +4,20 @@ export const authConfig = {
     signIn: '/login'
   },
   callbacks: {
-    authorized({ auth, request }) {
+    async authorized({ auth, request }) {
       const isLoggedIn = auth?.user
       const isOnDashboard = request.nextUrl.pathname.startsWith('/dashboard')
+
       if (isOnDashboard) {
-        if (isLoggedIn) return true
-        return false
+        if (isLoggedIn) {
+          return { redirect: { destination: '/dashboard', permanent: false } }
+        } else {
+          return false
+        }
       } else if (isLoggedIn) {
-        return Response.redirect(new URL('/dashboard', request.nextUrl))
+        return { redirect: { destination: '/dashboard', permanent: false } }
       }
+
       return true
     }
   }
