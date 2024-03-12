@@ -1,4 +1,4 @@
-/* export const authConfig = {
+export const authConfig = {
   providers: [],
   pages: {
     signIn: '/login'
@@ -17,4 +17,3 @@
     }
   }
 }
- */
