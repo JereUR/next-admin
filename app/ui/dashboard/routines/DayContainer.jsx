@@ -1,5 +1,3 @@
-'use client'
-import { useState } from 'react'
 
 import ExerciseForm from './ExerciseForm'
 import ExerciseList from './ExerciseList'
@@ -26,10 +24,10 @@ const DayContainer = ({
   const handleSubmit = (dayIndex, newExercise) => {
     addExercise(dayIndex, newExercise)
     setShowExerciseForm((prevShow) => {
-    const newShow = [...prevShow];
-    newShow[dayIndex] = false;
-    return newShow;
-  });
+      const newShow = [...prevShow]
+      newShow[dayIndex] = false
+      return newShow
+    })
   }
 
   return (
@@ -49,7 +47,6 @@ const DayContainer = ({
           handleSubmit={handleSubmit}
           setShowExerciseForm={setShowExerciseForm}
           exerciseToEdit={exerciseToEdit}
-          showExerciseForm={showExerciseForm}
         />
       )}
       <ExerciseList

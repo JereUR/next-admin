@@ -1,3 +1,4 @@
+'use client'
 import { useState } from 'react'
 import Image from 'next/image'
 
@@ -7,7 +8,6 @@ const ExerciseForm = ({
   dayIndex,
   handleSubmit,
   setShowExerciseForm,
-  showExerciseForm,
   exerciseToEdit = null
 }) => {
   const [formData, setFormData] = useState({
