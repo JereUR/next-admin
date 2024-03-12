@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  target: 'serverless',
-  basePath: '/tests-next.vercel.app',
+  reactStrictMode: true,
+  swcMinify: true,
   images: {
     remotePatterns: [
       {
