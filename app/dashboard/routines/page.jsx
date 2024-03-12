@@ -33,7 +33,7 @@ const RoutinesPage = async ({ searchParams }) => {
         {customRoutines.length > 0 ? (
           <tbody>
             {customRoutines.map((routine) => (
-              <tr className="my-4" key={routine.id}>
+              <tr className="my-4" key={routine._id}>
                 <td>
                   <div className="flex items-center gap-2">{routine.name}</div>
                 </td>
@@ -42,7 +42,7 @@ const RoutinesPage = async ({ searchParams }) => {
                 <td>
                   <div className="flex gap-2">
                     <div>
-                      <Link href={`/dashboard/routines/${routine.id}`}>
+                      <Link href={`/dashboard/routines/${routine._id}`}>
                         <button className="py-1 px-2 rounded-md text-white border-none cursor-pointer bg-teal-700">
                           View
                         </button>
