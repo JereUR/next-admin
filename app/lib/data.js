@@ -66,3 +66,14 @@ export const fetchCustomRoutines = async (q, page) => {
     throw new Error('Failed to fecth users!')
   }
 }
+
+export const fetchCustomRoutine = async (id) => {
+  console.log(id)
+  try {
+    connectToDB()
+    const customRoutine = await CustomRoutine.findById(id)
+    return customRoutine
+  } catch (error) {
+    throw new Error('Failed to fecth custom routine!')
+  }
+}
