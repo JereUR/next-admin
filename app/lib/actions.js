@@ -178,7 +178,7 @@ export const authenticate = async (prevState, formData) => {
 }
 
 export const addCustomRoutine = async (routineData) => {
-  const { id, name, exercises, description } = routineData
+  const { id, name, days, description } = routineData
 
   try {
     connectToDB()
@@ -186,7 +186,7 @@ export const addCustomRoutine = async (routineData) => {
     const newCustomRoutine = new CustomRoutine({
       id,
       name,
-      exercises,
+      days,
       description
     })
 
@@ -211,4 +211,31 @@ export const deleteCustomRoutine = async (id) => {
   }
 
   revalidatePath('/dashboard/routines')
+}
+
+export const updateCustomRoutine = async (formData) => {
+  const { id, name, exercises, description } = Object.fromEntries(formData)
+
+  try {
+    connectToDB()
+    const updateFields = new CustomRoutine({
+      id,
+      name,
+      exercises,
+      description
+    })
+
+    Object.keys(updateFields).forEach(
+      (key) =>
+        (updateFields[key] === '' || undefined) && delete updateFields[key]
+    )
+
+    await CustomRoutine.findByIdAndUpdate(id, updateFields)
+  } catch (error) {
+    console.log(error)
+    throw new Error('Failed to update routine!')
+  }
+
+  revalidatePath('/dashboard/routines')
+  redirect('/dashboard/routines')
 }
