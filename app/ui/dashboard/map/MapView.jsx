@@ -17,6 +17,8 @@ const MapView = () => {
   const [searchAddress, setSearchAddress] = useState('')
   const [searchSuggestions, setSearchSuggestions] = useState([])
   const [searchResult, setSearchResult] = useState(null)
+  const [addingMarker, setAddingMarker] = useState(false)
+  const [markerPosition, setMarkerPosition] = useState(null) // Estado para almacenar la posición del marcador generado por el botón
 
   const markers = [
     { geocode: [48.86, 2.3522], popup: 'Hello, I am pop up 1' },
@@ -87,13 +89,20 @@ const MapView = () => {
     </div>
   )
 
+  const handleAddMarker = () => {
+    setAddingMarker(true)
+    setMarkerPosition(mapRef.current.getCenter()) // Al agregar un marcador, establece la posición actual del centro del mapa como posición del marcador
+  }
+
   const handleMarkerDragEnd = (event) => {
     const marker = event.target
     const position = marker.getLatLng()
     setSearchResult([position.lat, position.lng])
+    setAddingMarker(false) // Restablecer addingMarker a false después de agregar un marcador
+    setMarkerPosition([position.lat, position.lng])
   }
 
-  console.log(searchResult)
+  console.log(markerPosition)
 
   return (
     <div>
@@ -120,8 +129,16 @@ const MapView = () => {
           }}
         />
       </div>
+      {!addingMarker && (
+        <button
+          className="flex gap-2 items-center justify-center p-2 bg-blue-600 text-white mb-4"
+          onClick={handleAddMarker}
+        >
+          Add Marker
+        </button>
+      )}
       <MapContainer
-        center={[48.8566, 2.3522]}
+        center={[location.coords.lat, location.coords.lng]}
         zoom={ZOOM_LEVEL}
         className="h-screen z-10"
         ref={mapRef}
@@ -153,6 +170,16 @@ const MapView = () => {
               eventHandlers={{ dragend: handleMarkerDragEnd }}
             >
               <Popup>Search Result</Popup>
+            </Marker>
+          )}
+          {addingMarker && (
+            <Marker
+              icon={customIcon}
+              position={markerPosition} // Utiliza la posición almacenada del marcador generado por el botón
+              draggable={true}
+              eventHandlers={{ dragend: handleMarkerDragEnd }}
+            >
+              <Popup>Add Marker</Popup>
             </Marker>
           )}
         </MarkerClusterGroup>
