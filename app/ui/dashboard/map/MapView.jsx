@@ -2,10 +2,9 @@
 
 import { Icon, divIcon, point } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
-import { GiGlobe } from 'react-icons/gi'
 import Autosuggest from 'react-autosuggest'
 import 'tailwindcss/tailwind.css'
 
@@ -16,7 +15,16 @@ const MapView = () => {
   const [searchSuggestions, setSearchSuggestions] = useState([])
   const [searchResult, setSearchResult] = useState(null)
   const [addingMarker, setAddingMarker] = useState(false)
-  const [markerPosition, setMarkerPosition] = useState(null) // Estado para almacenar la posición del marcador generado por el botón
+  const [markerPosition, setMarkerPosition] = useState(null)
+  const [isBrowser, setIsBrowser] = useState(false)
+
+  useEffect(() => {
+    setIsBrowser(true)
+  }, [])
+
+  if (!isBrowser) {
+    return null
+  }
 
   const markers = [
     { geocode: [48.86, 2.3522], popup: 'Hello, I am pop up 1' },

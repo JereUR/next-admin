@@ -1,12 +1,7 @@
-import MapView from '@/app/ui/dashboard/map/MapView'
-import React from 'react'
+import MapView from '@/app/ui/dashboard/map'
 
 const MapPage = () => {
-  return (
-    <div className="m-10">
-      <MapView />
-    </div>
-  )
+  return <MapView />
 }
 
 export default MapPage
