@@ -98,11 +98,9 @@ const MapView = () => {
     const marker = event.target
     const position = marker.getLatLng()
     setSearchResult([position.lat, position.lng])
-    setAddingMarker(false) // Restablecer addingMarker a false después de agregar un marcador
+    setAddingMarker(false)
     setMarkerPosition([position.lat, position.lng])
   }
-
-  console.log(markerPosition)
 
   return (
     <div>
@@ -137,53 +135,55 @@ const MapView = () => {
           Add Marker
         </button>
       )}
-      <MapContainer
-        center={[location.coords.lat, location.coords.lng]}
-        zoom={ZOOM_LEVEL}
-        className="h-screen z-10"
-        ref={mapRef}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <MarkerClusterGroup
-          chunkedLoading /*performance*/
-          iconCreateFunction={createCustomClusterIcon}
+      {location.loaded && !location.error && (
+        <MapContainer
+          center={[location.coords.lat, location.coords.lng]}
+          zoom={ZOOM_LEVEL}
+          className="h-screen z-10"
+          ref={mapRef}
         >
-          {markers.map((marker, index) => (
-            <Marker key={index} position={marker.geocode} icon={customIcon}>
-              <Popup>{marker.popup}</Popup>
-            </Marker>
-          ))}
-          {location.loaded && !location.error && (
-            <Marker
-              icon={homeIcon}
-              position={[location.coords.lat, location.coords.lng]}
-            ></Marker>
-          )}
-          {searchResult && (
-            <Marker
-              icon={customIcon}
-              position={searchResult}
-              draggable={true}
-              eventHandlers={{ dragend: handleMarkerDragEnd }}
-            >
-              <Popup>Search Result</Popup>
-            </Marker>
-          )}
-          {addingMarker && (
-            <Marker
-              icon={customIcon}
-              position={markerPosition} // Utiliza la posición almacenada del marcador generado por el botón
-              draggable={true}
-              eventHandlers={{ dragend: handleMarkerDragEnd }}
-            >
-              <Popup>Add Marker</Popup>
-            </Marker>
-          )}
-        </MarkerClusterGroup>
-      </MapContainer>
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <MarkerClusterGroup
+            chunkedLoading /*performance*/
+            iconCreateFunction={createCustomClusterIcon}
+          >
+            {markers.map((marker, index) => (
+              <Marker key={index} position={marker.geocode} icon={customIcon}>
+                <Popup>{marker.popup}</Popup>
+              </Marker>
+            ))}
+            {location.loaded && !location.error && (
+              <Marker
+                icon={homeIcon}
+                position={[location.coords.lat, location.coords.lng]}
+              ></Marker>
+            )}
+            {searchResult && (
+              <Marker
+                icon={customIcon}
+                position={searchResult}
+                draggable={true}
+                eventHandlers={{ dragend: handleMarkerDragEnd }}
+              >
+                <Popup>Search Result</Popup>
+              </Marker>
+            )}
+            {addingMarker && (
+              <Marker
+                icon={customIcon}
+                position={markerPosition} // Utiliza la posición almacenada del marcador generado por el botón
+                draggable={true}
+                eventHandlers={{ dragend: handleMarkerDragEnd }}
+              >
+                <Popup>Add Marker</Popup>
+              </Marker>
+            )}
+          </MarkerClusterGroup>
+        </MapContainer>
+      )}
       <div className="my-4 w-[10vw]">
         <div className="flex flex-col justify-center">
           <button
