@@ -5,14 +5,12 @@ import 'leaflet/dist/leaflet.css'
 import { useRef, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
-import useGeolation from './useGeolation'
 import { GiGlobe } from 'react-icons/gi'
 import Autosuggest from 'react-autosuggest'
 import 'tailwindcss/tailwind.css'
 
 const MapView = () => {
   const mapRef = useRef()
-  const location = useGeolation()
   const ZOOM_LEVEL = 13
   const [searchAddress, setSearchAddress] = useState('')
   const [searchSuggestions, setSearchSuggestions] = useState([])
@@ -31,29 +29,12 @@ const MapView = () => {
     iconSize: [38, 38]
   })
 
-  const homeIcon = new Icon({
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/7757/7757494.png',
-    iconSize: [38, 38]
-  })
-
   const createCustomClusterIcon = (cluster) => {
     return new divIcon({
       html: `<div class='h-12 w-12 rounded-full bg-white transform translate-x-[-50%] translate-y-[-50%] flex justify-center items-center font-[900] text-xl text-black'>${cluster.getChildCount()}</div>`,
       className: 'custom-marker-cluster',
       iconSize: point(33, 33, true)
     })
-  }
-
-  const showMyLocation = () => {
-    if (location.loaded && !location.error) {
-      const { lat, lng } = location.coords
-      mapRef.current.flyTo([lat, lng], ZOOM_LEVEL, {
-        animate: true,
-        duration: 1.5
-      })
-    } else {
-      alert(location.error.message)
-    }
   }
 
   const handleSearch = async (value) => {
@@ -135,65 +116,48 @@ const MapView = () => {
           Add Marker
         </button>
       )}
-      {location.loaded && !location.error && (
-        <MapContainer
-          center={[location.coords.lat, location.coords.lng]}
-          zoom={ZOOM_LEVEL}
-          className="h-screen z-10"
-          ref={mapRef}
+
+      <MapContainer
+        center={[-34.933333333333, -57.95]}
+        zoom={ZOOM_LEVEL}
+        className="h-screen z-10"
+        ref={mapRef}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <MarkerClusterGroup
+          chunkedLoading /*performance*/
+          iconCreateFunction={createCustomClusterIcon}
         >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <MarkerClusterGroup
-            chunkedLoading /*performance*/
-            iconCreateFunction={createCustomClusterIcon}
-          >
-            {markers.map((marker, index) => (
-              <Marker key={index} position={marker.geocode} icon={customIcon}>
-                <Popup>{marker.popup}</Popup>
-              </Marker>
-            ))}
-            {location.loaded && !location.error && (
-              <Marker
-                icon={homeIcon}
-                position={[location.coords.lat, location.coords.lng]}
-              ></Marker>
-            )}
-            {searchResult && (
-              <Marker
-                icon={customIcon}
-                position={searchResult}
-                draggable={true}
-                eventHandlers={{ dragend: handleMarkerDragEnd }}
-              >
-                <Popup>Search Result</Popup>
-              </Marker>
-            )}
-            {addingMarker && (
-              <Marker
-                icon={customIcon}
-                position={markerPosition} // Utiliza la posición almacenada del marcador generado por el botón
-                draggable={true}
-                eventHandlers={{ dragend: handleMarkerDragEnd }}
-              >
-                <Popup>Add Marker</Popup>
-              </Marker>
-            )}
-          </MarkerClusterGroup>
-        </MapContainer>
-      )}
-      <div className="my-4 w-[10vw]">
-        <div className="flex flex-col justify-center">
-          <button
-            className="flex gap-2 items-center justify-center p-2 bg-red-600 text-white"
-            onClick={showMyLocation}
-          >
-            Locate Me <GiGlobe />
-          </button>
-        </div>
-      </div>
+          {markers.map((marker, index) => (
+            <Marker key={index} position={marker.geocode} icon={customIcon}>
+              <Popup>{marker.popup}</Popup>
+            </Marker>
+          ))}
+          {addingMarker && (
+            <Marker
+              icon={customIcon}
+              position={markerPosition}
+              draggable={true}
+              eventHandlers={{ dragend: handleMarkerDragEnd }}
+            >
+              <Popup>Add Marker</Popup>
+            </Marker>
+          )}
+          {searchResult && (
+            <Marker
+              icon={customIcon}
+              position={searchResult}
+              draggable={true}
+              eventHandlers={{ dragend: handleMarkerDragEnd }}
+            >
+              <Popup>Search Result</Popup>
+            </Marker>
+          )}
+        </MarkerClusterGroup>
+      </MapContainer>
     </div>
   )
 }
