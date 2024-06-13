@@ -1,11 +1,16 @@
 'use client'
 
 import 'leaflet/dist/leaflet.css'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import 'tailwindcss/tailwind.css'
-import { createCustomClusterIcon, destinationIcon, ZOOM_LEVEL } from './MapInfo'
+import {
+  createCustomClusterIcon,
+  destinationIcon,
+  sendIcon,
+  ZOOM_LEVEL
+} from './MapInfo'
 import FormMarker from './FormMarker'
 
 const MapView = () => {
@@ -13,6 +18,28 @@ const MapView = () => {
   const [addingMarker, setAddingMarker] = useState(false)
   const [markerPosition, setMarkerPosition] = useState(null)
   const [allMarkers, setAllMarkers] = useState([])
+  const [location, setLocation] = useState({ lat: null, lng: null })
+
+  useEffect(() => {
+    if ('geolocation' in navigator) {
+      const watchId = navigator.geolocation.watchPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords
+          setLocation({ lat: latitude, lng: longitude })
+        },
+        (error) => console.error('Error getting location', error),
+        {
+          enableHighAccuracy: true,
+          maximumAge: 0,
+          timeout: 5000
+        }
+      )
+
+      return () => navigator.geolocation.clearWatch(watchId)
+    } else {
+      console.error('Geolocation is not supported by this browser')
+    }
+  }, [])
 
   const handleMarkerDragEnd = (event) => {
     const marker = event.target
@@ -43,6 +70,12 @@ const MapView = () => {
             chunkedLoading /*performance*/
             iconCreateFunction={createCustomClusterIcon}
           >
+            {location.lat && location.lng && (
+              <Marker
+                icon={sendIcon}
+                position={[location.lat, location.lng]}
+              ></Marker>
+            )}
             {addingMarker && markerPosition && (
               <Marker
                 icon={destinationIcon}
