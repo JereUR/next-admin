@@ -68,7 +68,6 @@ const MapView = () => {
           )
 
           const routesResults = await Promise.all(routesPromises)
-          console.log('Routes results:', routesResults)
 
           const newRoutes = routesResults.map((result) => {
             const route = result.body.routes[0]
@@ -76,7 +75,6 @@ const MapView = () => {
             return decodedGeometry.map(([lat, lng]) => ({ lat, lng }))
           })
 
-          console.log('New routes:', newRoutes)
           setRoutes(newRoutes)
         } catch (error) {
           console.error('Error fetching routes', error)
