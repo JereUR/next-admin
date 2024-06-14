@@ -19,3 +19,9 @@ export const createCustomClusterIcon = (cluster) => {
     iconSize: point(33, 33, true)
   })
 }
+
+export const initialMarkerInfo = {
+  coords: null,
+  name: '',
+  description: ''
+}

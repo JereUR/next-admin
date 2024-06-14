@@ -1,17 +1,23 @@
 import React, { useState } from 'react'
 import Autosuggest from 'react-autosuggest'
-import { ZOOM_LEVEL } from './MapInfo'
+import { initialMarkerInfo, ZOOM_LEVEL } from './MapInfo'
 
 const FormMarker = ({
+  allMarkers,
   setAllMarkers,
-  setAddingMarker,
   mapRef,
-  setMarkerPosition
+  setMarkerInfo,
+  markerInfo
 }) => {
   const [searchAddress, setSearchAddress] = useState('')
   const [searchSuggestions, setSearchSuggestions] = useState([])
   const [openForm, setOpenForm] = useState(false)
   const [onEdit, setOnEdit] = useState(false)
+
+  const handleChange = (e) => {
+    const { value, name } = e.target
+    setMarkerInfo({ ...markerInfo, [name]: value })
+  }
 
   const handleSearch = async (value) => {
     const response = await fetch(
@@ -27,8 +33,8 @@ const FormMarker = ({
       animate: true,
       duration: 1.5
     })
-    setMarkerPosition([lat, lon])
-    setAddingMarker(true)
+    setMarkerInfo({ ...markerInfo, coords: [lat, lon] })
+    setOnEdit(true)
   }
 
   const onSuggestionsFetchRequested = ({ value }) => {
@@ -48,52 +54,126 @@ const FormMarker = ({
   )
 
   const handleAddMarker = () => {
-    setMarkerPosition(mapRef.current.getCenter())
-    setAddingMarker(true)
+    setMarkerInfo({ ...markerInfo, coords: mapRef.current.getCenter() })
+    setOnEdit(true)
+  }
+
+  const handleCancel = () => {
+    setOpenForm(false)
+    setOnEdit(false)
+    setMarkerInfo({ ...markerInfo, coords: null })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setAllMarkers([...allMarkers, markerInfo])
+    setMarkerInfo(initialMarkerInfo)
+    setOpenForm(false)
+    setOnEdit(false)
   }
 
   return (
-    <div>
-      <button
-        className="p-2 bg-purple-600 my-4 mx-10 border border-black rounded-lg"
-        type="button"
-        onClick={() => setOpenForm(true)}
-      >
-        Add Marker
-      </button>
+    <div className="my-4 mx-10">
+      {!openForm && (
+        <button
+          className="p-2 bg-purple-600 border border-black rounded-lg"
+          type="button"
+          onClick={() => setOpenForm(true)}
+        >
+          Add Marker
+        </button>
+      )}
       {openForm && (
-        <div className="flex gap-4">
-          <div className="relative my-4">
-            <Autosuggest
-              suggestions={searchSuggestions}
-              onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-              onSuggestionsClearRequested={onSuggestionsClearRequested}
-              getSuggestionValue={getSuggestionValue}
-              renderSuggestion={renderSuggestion}
-              inputProps={{
-                value: searchAddress,
-                onChange: (e, { newValue }) => setSearchAddress(newValue),
-                className: 'p-2 border border-gray-300 rounded text-black',
-                placeholder: 'Enter address',
-                disabled: onEdit
-              }}
-              onSuggestionSelected={onSuggestionSelected}
-              theme={{
-                suggestionsContainer:
-                  'absolute bg-white shadow-lg z-20 w-full text-black',
-                suggestionsList: 'm-0 p-0 list-none',
-                suggestion: '',
-                suggestionHighlighted: 'bg-gray-300'
-              }}
-            />
+        <div className="relative w-[30vw]">
+          <div className="absolute -top-5 right-0">
+            <button
+              className="px-2 bg-gray-800 text-red-600"
+              onClick={() => setOpenForm(false)}
+            >
+              X
+            </button>
           </div>
-          <button
-            className="flex gap-2 items-center justify-center p-2 bg-blue-600 text-white mb-4"
-            onClick={handleAddMarker}
-            disabled={onEdit}
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col justify-center my-10 mx-4 "
           >
-            Add Marker
-          </button>
+            <div className="flex flex-col justify-center gap-4 text-black">
+              <div>
+                <input
+                  name="name"
+                  type="text"
+                  value={markerInfo.name}
+                  placeholder="Enter name"
+                  onChange={handleChange}
+                  className="p-2"
+                />
+              </div>
+              <div>
+                <input
+                  name="description"
+                  type="text"
+                  value={markerInfo.description}
+                  placeholder="Enter description"
+                  onChange={handleChange}
+                  className="p-2"
+                />
+              </div>
+              <span className="text-white font-semibold">Generate marker</span>
+              <div className="flex flex-col gap-4">
+                <div>
+                  <Autosuggest
+                    suggestions={searchSuggestions}
+                    onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+                    onSuggestionsClearRequested={onSuggestionsClearRequested}
+                    getSuggestionValue={getSuggestionValue}
+                    renderSuggestion={renderSuggestion}
+                    inputProps={{
+                      value: searchAddress,
+                      onChange: (e, { newValue }) => setSearchAddress(newValue),
+                      className:
+                        'p-2 border border-gray-300 rounded text-black w-full',
+                      placeholder: 'Enter address',
+                      disabled: onEdit
+                    }}
+                    onSuggestionSelected={onSuggestionSelected}
+                    theme={{
+                      suggestionsContainer:
+                        'absolute bg-white shadow-lg z-20 w-full text-black',
+                      suggestionsList: 'm-0 p-0 list-none',
+                      suggestion: '',
+                      suggestionHighlighted: 'bg-gray-300'
+                    }}
+                  />
+                </div>
+                <span className="text-white text-center">ó</span>
+                <button
+                  type="button"
+                  className="flex gap-2 items-center justify-center p-2 bg-blue-600 text-white mb-4"
+                  onClick={handleAddMarker}
+                  disabled={onEdit}
+                >
+                  Add Marker
+                </button>
+              </div>
+            </div>
+            {onEdit && (
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="p-2 bg-red-600 text-white mb-4"
+              >
+                Cancelar
+              </button>
+            )}
+            {onEdit && (
+              <button
+                type="submit"
+                className="p-2 bg-green-600 text-white mb-4"
+              >
+                Add
+              </button>
+            )}
+          </form>
         </div>
       )}
     </div>
